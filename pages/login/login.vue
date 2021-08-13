@@ -1,4 +1,5 @@
 <template>
+	<!-- by:徐诚真 -->
 	<!-- 登录页面 -->
 	<view class="">
 		<!-- 提示窗 -->
@@ -7,7 +8,6 @@
 		<view class="head">
 			<head-Banner></head-Banner>
 		</view>
-
 		<!-- 用户登录核心部分 -->
 		<view class="centerBanner">
 			<view class="centerBanner_input">
@@ -25,7 +25,9 @@
 					<checkbox value="cb" />我已阅读<u-link href="javaScript:void(0);">{{msg}}</u-link>
 				</label>
 			</checkbox-group>
-			<button class="submit" @click="toInfoEdit()">登录</button>
+			<u-button class='btn submit' :plain="true" :ripple="true" @click="toLogin()" ripple-bg-color="#909399"
+				type="success">登录
+			</u-button>
 		</view>
 		<!-- 底部栏 -->
 		<view class="lastBanner">
@@ -40,6 +42,7 @@
 </template>
 
 <script>
+	import store from '@/store/index.js';
 	export default {
 		data() {
 			return {
@@ -48,16 +51,43 @@
 				msg: '用户守则',
 				checkBoxState: false,
 				show: false,
-				// content: '请阅读并勾选用户守则'
+				rules: {
+					username: {
+
+					}
+				}
 			}
 		},
+		onReady() {},
 		computed: {
 
 		},
+
 		methods: {
 			//提示窗
 			async open() {
 				this.show = true;
+			},
+			routeJudge(data) {
+				if (store.state.loginStatus == 200) {
+					//账号密码正确，
+					this.$store.commit("updateEnterpriseInformation", data);
+					if (data.enterpriseName == null) {
+						//如果企业信息为空
+						uni.redirectTo({
+							url: '/pages/enterprise_InformationEditing/enterprise_InformationEditing'
+						})
+					} else {
+						//跳转到主页
+						uni.switchTab({
+							url: '../position/position'
+						})
+					}
+
+				} else if (store.state.loginStatus == 400) {
+					//密码错误
+					this.$u.toast('账号或者密码错误')
+				}
 			},
 			toRePassword() {
 				uni.navigateTo({ //前往找回密码页面
@@ -69,30 +99,27 @@
 					url: '/pages/register/register'
 				})
 			},
-			// login(){
-				
-			// }
-			// ,
-			 toInfoEdit() {
-				if (this.checkBoxState == true) {
-					if (true) {
-						//账号密码正确，前往编辑企业信息
-						uni.redirectTo({
-							url: '/pages/enterprise_InformationEditing/enterprise_InformationEditing'
-						})
-					} else {
-						//密码错误
-						console.log('账号或者密码错误')
-					}
+			toLogin() {
+				if (this.checkBoxState == true) { //勾选
+					uni.request({ //获取用户信息
+						url: 'http://wuwu.free.idcfengye.com/enterprise/login',
+						method: 'POST',
+						data: {
+							nickname: this.username,
+							password: this.pwd,
+						},
+						dataType: 'json',
+						success: (res) => {
+							store.state.loginStatus = res.data.code; //把状态码传到vuex
+							this.routeJudge(res.data.data);
+						},
+					})
 				} else if (this.checkBoxState == false) {
-					console.log('请阅读并勾选用户守则');
-					// open();
+					this.$u.toast('请阅读并勾选用户守则')
 				}
 			},
 			checkboxChange() {
 				this.checkBoxState == false ? this.checkBoxState = true : this.checkBoxState = false;
-				console.log(this.checkBoxState);
-				console.log('改变选取状态');
 			},
 
 		}
@@ -108,7 +135,7 @@
 		width: 100%;
 		height: 370rpx;
 		background-color: #74d69b;
-		
+
 	}
 
 	.head /deep/.circular {
@@ -120,10 +147,10 @@
 		border-radius: 70rpx;
 	}
 
-	 .head /deep/.circularCenter {
+	.head /deep/.circularCenter {
 		position: relative;
-		top: 24rpx;
-		left: 38rpx;
+		top: 32rpx;
+		left: 42rpx;
 		width: 70rpx;
 		height: 70rpx;
 		font-size: 14px;
@@ -157,7 +184,7 @@
 
 	.inputBanner {
 		margin-left: 0rpx;
-		border-bottom: 1px solid #000000;
+		border-bottom: 1px solid #F4F6F8;
 	}
 
 

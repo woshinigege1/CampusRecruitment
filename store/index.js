@@ -6,9 +6,17 @@ Vue.use(Vuex);
 const store = new 
 Vuex.Store({
 	state: { //存放状态
-	"username": "fff",
-	"password": '123456',
-	"authentication":true
+	'loginStatus':0,
+	'result':'',
+	},
+	mutations:{
+		updateEnterpriseInformation(state,obj){
+			// 更新企业信息
+			state.result = obj;
+		},
+		toClear(state){
+			state.result = {};
+		}
 	}
 })
  

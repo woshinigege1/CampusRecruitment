@@ -3,7 +3,7 @@
 		<view class="headBanner">
 			<view class="circular">
 				<view class="circularCenter">
-					企业入驻
+					{{msg}}
 				</view>
 			</view>
 		</view>
@@ -15,7 +15,7 @@
 		name:"headBanner",
 		data() {
 			return {
-				
+				msg:'企业入驻'
 			};
 		}
 	}
@@ -39,8 +39,8 @@
 	
 	.circularCenter {
 		position: relative;
-		top: 24rpx;
-		left: 38rpx;
+		top: 30rpx;
+		left: 42rpx;
 		width: 70rpx;
 		height: 70rpx;
 		font-size: 14px;

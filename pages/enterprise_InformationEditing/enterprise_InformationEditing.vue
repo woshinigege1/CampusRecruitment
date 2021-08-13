@@ -118,7 +118,7 @@
 		},
 		created() {
 			// 回显企业信息
-			console.log(this.result.id);
+			
 			this.loadInformation();
 
 		},
@@ -131,7 +131,7 @@
 			},
 			// 多选框
 			confirm(e) {
-				console.log(e);
+				
 				this.form.type = e[0];
 			},
 			onReady() {

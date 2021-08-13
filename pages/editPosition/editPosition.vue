@@ -1,20 +1,33 @@
 <template>
 	<!-- by:ZhangXiaodong -->
-	<view>
+	<view class="body">
 		<u-navbar :is-back="true" back-icon-color='#ffffff' title="编辑职位" :background="background" title-color='#ffffff'>
 		</u-navbar>
 		<form class="editPosition" method="post">
-			<p>职位名称: </p>
-			<view class="uni-form-item uni-column editPosition-item">
-				<u-input type="text" class="uni-input" v-model="position.positionName"   />
+
+			<view class="box">
+				<view class="content">
+					职位名称:
+				</view>
+				<view class="uni-form-item uni-column editPosition-item">
+					<u-input type="text" class="uni-input" v-model="position.positionName" />
+				</view>
 			</view>
-			<p>职位要求:</p>
-			<view class="uni-form-item uni-column editPosition-item">
-				<u-input type="text" class="uni-input" required="required" v-model="position.positionRequire" />
+			<view class="box">
+				<view class="content">
+					职位要求:
+				</view>
+				<view class="uni-form-item uni-column editPosition-item">
+					<u-input type="text" class="uni-input" required="required" v-model="position.positionRequire" />
+				</view>
 			</view>
-			<p>职位描述: </p>
-			<view class="uni-form-item uni-column editPosition-item">
-				<u-input type="text" class="uni-input" v-model="position.positionDetail" />
+			<view class="box">
+				<view class="content">
+					职位描述:
+				</view>
+				<view class="uni-form-item uni-column editPosition-item">
+					<u-input type="text" class="uni-input" v-model="position.positionDetail" />
+				</view>
 			</view>
 			<view class="ex"></view>
 			<view class="uni-btn-v editPosition-submit">
@@ -38,27 +51,26 @@
 				// 职业id
 				id: null,
 				position: {
-					positionDetail:'',
-					positionName:'',
-					positionRequire:''
+					positionDetail: '',
+					positionName: '',
+					positionRequire: ''
 				}
 
 			}
 		},
 		onLoad(option) {
-			console.log(option);
-			// console.log(option.positionId);
-			if(option.positionId==undefined){
-				console.log("没有PositionId")
-				let position={
+			
+			if (option.positionId == undefined) {
+				
+				let position = {
 					positionDetail: "",
 					positionName: "",
 					positionRequire: ""
 				}
-				this.position=position;
-			}else{
-				console.log("有PositionId")
-				this.id=option.positionId;
+				this.position = position;
+			} else {
+				
+				this.id = option.positionId;
 				this.getPositionById();
 			}
 		},
@@ -69,20 +81,29 @@
 				uni.request({
 					url: "http://wuwu.free.idcfengye.com/position/getPositionById?positionId=" + this.id,
 					success(res) {
-						console.log(res.data.data);
+						
 						that.position = res.data.data;
 					}
 				})
 			},
+			
 			submit(positionStatus) {
+				if (positionStatus == 1) {
+					this.$u.toast('正在发布...')
+				} else {
+					this.$u.toast('停止发布中...')
+
+				}
 				//判断是否为空
 				if (this.position.positionName.length == 0) {
+					
 					return uni.showToast({
 						title: '请输入职位名称',
 						icon: 'none',
 						duration: 2000
 					});
 				} else if (this.position.positionRequire.length == 0) {
+					
 					return uni.showToast({
 						title: '请输入职位要求',
 						icon: 'none',
@@ -90,6 +111,7 @@
 					});
 
 				} else if (this.position.positionDetail.length == 0) {
+					
 					return uni.showToast({
 						title: '请输入描述',
 						icon: 'none',
@@ -112,9 +134,9 @@
 					method: "POST",
 					// dataType:'json'
 					success(res) {
-						console.log(res);
+						
 						uni.switchTab({
-							url:"../position/position"
+							url: "../position/position"
 						})
 					},
 
@@ -131,11 +153,37 @@
 	/* 注意要写在第一行，同时给style标签加入lang="scss"属性 */
 	@import "uview-ui/index.scss";
 
+	.body {
+		width: 100%;
+		height: 1300rpx;
+	}
+
+	.editPosition {
+		width: 90%;
+		
+	}
+
 	.editPosition-item {
 		margin-bottom: 20rpx;
-		border-bottom: 1rpx solid #63B2FF;
+		width: 90%;
+		margin: 0 auto;
+		// border-bottom: 1rpx solid #63B2FF;
 		height: 70rpx;
 		border-radius: 20rpx;
+		// background-color: #000000;
+	}
+	.box {
+		padding-top: 20rpx;
+	}
+
+	.content {
+		float: left;
+		height: 68rpx;
+		line-height: 68rpx;
+	}
+
+	.uni-input {
+		float: left;
 	}
 
 	.editPosition-submit {

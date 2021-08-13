@@ -86,7 +86,7 @@
 					},
 					method:'GET',
 					success(res) {
-						console.log(res);
+						
 						uni.switchTab({
 							url:'../personnel/personnel'
 						})

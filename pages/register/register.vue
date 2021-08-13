@@ -156,7 +156,7 @@
 							url: 'http://wuwu.free.idcfengye.com/enterprise/email?emailAddress=' + this.form.email,
 							method: 'POST',
 							success: (res) => {
-								console.log(res.data);
+								
 								this.VerificationCode = res.data.data.code;
 							}
 						})
@@ -196,7 +196,7 @@
 				}
 			},
 			toSubmit() { //点击提交按钮事件
-				console.log('点击');
+				
 				if (this.form.username == '') {
 					this.$u.toast('用户名未填写');
 				} else if (this.form.password == '') {
